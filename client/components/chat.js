@@ -1,3 +1,6 @@
+/* Utils */
+import { createElement } from '../utils/dom.js';
+
 class Chat {
     constructor(rootNode) {
         this.root = rootNode;
@@ -5,13 +8,11 @@ class Chat {
 
     render() {
         const root = this.root;
-        const input = document.createElement('input');
-        const button = document.createElement('button');
-        const msgList = document.createElement('ul');
+        const button = createElement('button',
+                { innerText: 'Submit', onclick: this.clickhHandler });
 
-        button.innerText = 'Submit';
-        button.onclick = this.clickHandler;
-        input.onkeydown = this.enterHandler;
+        const input = createElement('input', { onkeydown: this.enterHandler });
+        const msgList = createElement('ul');
 
         root.appendChild(msgList);
         root.appendChild(input)

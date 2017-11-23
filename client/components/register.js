@@ -1,3 +1,6 @@
+/* Utils */
+import { createElement } from '../utils/dom.js';
+
 class Register {
     constructor(rootNode) {
         this.root = rootNode;
@@ -5,11 +8,10 @@ class Register {
 
     render() {
         const root = this.root;
-        const input = document.createElement('input');
-        const btn = document.createElement('button');
-
-        btn.innerText = 'Create User';
-        btn.onclick = this.clickHandler.bind(this);
+        const input = createElement('input');
+        const btn = createElement('button',
+            { innerText: 'Create User',
+                onclick: this.clickHandler.bind(this) });
 
         root.appendChild(input);
         root.appendChild(btn);

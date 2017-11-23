@@ -6,6 +6,9 @@ import Message from './data/message.js';
 import RegisterForm from './components/register.js';
 import ChatForm from './components/chat.js';
 
+/* Utils */
+import { createElement } from './utils/dom.js';
+
 class Application {
     constructor() {
         this.root = document.getElementById('app');
@@ -22,22 +25,25 @@ class Application {
 
         const usrName = input.value.trim();
         if (usrName.length > 0) {
-            this.conn = new Connection(`ws://localhost:8080/ws?user=${usrName}`);
+            const url =`ws://localhost:8080/ws?user=${usrName}`;
+            this.conn = new Connection(url);
+            this.conn.onmessage = this.messageHandler.bind(this);
             this.conn.onopen = () =>  {
+                const newCmp = new ChatForm(this.root);
+                newCmp.clickHandler = this.clickHandler.bind(this);
+                newCmp.enterHandler = this.enterHandler.bind(this);
+
                 this.activeComponent.destroy();
-                this.activeComponent = new ChatForm(this.root);
-                this.activeComponent.clickHandler = this.clickHandler.bind(this);
-                this.activeComponent.enterHandler = this.enterHandler.bind(this);
+                this.activeComponent = newCmp;
                 this.activeComponent.render();
             };
-            this.conn.onmessage = this.messageHandler.bind(this);
         }
 
         input.value = "";
     }
 
     renderMessage(message) {
-        const item = document.createElement('li');
+        const item = createElement('li');
         const [list] = document.getElementsByTagName('ul');
         if (!list) {
             throw new Error('Message List not found.');
