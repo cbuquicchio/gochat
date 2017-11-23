@@ -2,8 +2,6 @@ class Connection {
     constructor(url) {
         this.url = url;
         this.ws = new WebSocket(url);
-
-        this.onerror = () => {debugger;};
     }
 
     set onmessage(handler) {
