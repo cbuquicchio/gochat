@@ -58,7 +58,6 @@ func handleConnections(ws *websocket.Conn) {
 
 	/* Check to see if username is already registered with a connection */
 	_, ok := connMapToUsr[usr]
-	fmt.Println(ok)
 	if ok {
 		ws.Close()
 		return
