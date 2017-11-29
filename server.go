@@ -50,20 +50,20 @@ func handleMessages() {
    up by the handleMessages goroutine
 */
 func handleConnections(ws *websocket.Conn) {
+	defer ws.Close()
 	usr := ws.Request().FormValue("user")
 	if usr == "" {
-		ws.Close()
 		return
 	}
 
 	/* Check to see if username is already registered with a connection */
 	_, ok := connMapToUsr[usr]
 	if ok {
-		ws.Close()
 		return
 	}
 
 	connMapToUsr[usr] = ws
+	defer delete(connMapToUsr, usr)
 
 	/* Loop to receive messages from ws client */
 	for {
